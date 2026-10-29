@@ -77,6 +77,14 @@ export async function POST(request: NextRequest) {
   const expectedUsername = process.env.AUTH_USERNAME ?? "";
   const expectedPassword = process.env.AUTH_PASSWORD ?? "";
 
+  if (!expectedUsername || !expectedPassword) {
+    console.error("Thiếu biến môi trường AUTH_USERNAME hoặc AUTH_PASSWORD");
+    return NextResponse.json(
+      { error: "Máy chủ chưa được cấu hình đăng nhập." },
+      { status: 500 }
+    );
+  }
+
   const usernameOk = constantTimeCompare(username, expectedUsername);
   const passwordOk = constantTimeCompare(password, expectedPassword);
 
